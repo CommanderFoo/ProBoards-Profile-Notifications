@@ -1,3 +1,5 @@
+// Note:  this comes from Yootil v2, I was too lazy to write something new.
+
 profile_notifications.api.key = class {
 
 	static init(){

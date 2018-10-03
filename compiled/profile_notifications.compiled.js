@@ -614,6 +614,8 @@ profile_notifications.api = function () {
 	return _class;
 }();
 
+// Note:  this comes from Yootil v2, I was too lazy to write something new.
+
 profile_notifications.api.key = function () {
 	function _class2() {
 		_classCallCheck(this, _class2);

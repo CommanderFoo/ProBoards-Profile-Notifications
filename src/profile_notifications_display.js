@@ -27,7 +27,9 @@ class profile_notifications_display {
 
 			$tip_number.html(profile_notifications.number_format(total));
 
-			this.mark_all_viewed();
+			if(profile_notifications.ROUTE.name == "show_user_notifications"){
+				this.mark_all_viewed();
+			}
 		}
 	}
 
@@ -107,7 +109,7 @@ class profile_notifications_display {
 			$main.append($("<span class='new-icon'>new</span>)"));
 		}
 
-		$main.append(document.createTextNode(entry.split("@@")[0]));
+		$main.append(profile_notifications.api.parse(document.createTextNode(entry.split("@@")[0])));
 
 		$time.html("<abbr class='o-timestamp time' data-timestamp='" + id + "' title='" + new Date(id) + "'></abbr>");
 

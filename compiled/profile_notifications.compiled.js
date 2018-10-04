@@ -14,7 +14,7 @@ var profile_notifications = function () {
 	_createClass(profile_notifications, null, [{
 		key: "init",
 		value: function init() {
-			this.version = "1.0.0";
+			this.version = "1.0.1";
 
 			// Total notifications to show.
 			// Ideally this would become a setting in the
@@ -24,10 +24,12 @@ var profile_notifications = function () {
 
 			this.PLUGIN_KEY = "pd_profile_notifications";
 			this.PLUGIN_ID = "pd_profile_notifications";
-			this.PLUGIN_VERSION = "1.0.0";
+			this.PLUGIN_VERSION = "1.0.1";
 			this.PLUGIN_SETTINGS = null;
 			this.PLUGIN_IMAGES = null;
 			this.PLUGIN = null;
+
+			this.events = Object.create(null);
 
 			this.KEY_DATA = new Map();
 
@@ -225,7 +227,9 @@ var profile_notifications_display = function () {
 
 				$tip_number.html(profile_notifications.number_format(total));
 
-				this.mark_all_viewed();
+				if (profile_notifications.ROUTE.name == "show_user_notifications") {
+					this.mark_all_viewed();
+				}
 			}
 		}
 	}, {
@@ -312,7 +316,7 @@ var profile_notifications_display = function () {
 				$main.append($("<span class='new-icon'>new</span>)"));
 			}
 
-			$main.append(document.createTextNode(entry.split("@@")[0]));
+			$main.append(profile_notifications.api.parse(document.createTextNode(entry.split("@@")[0])));
 
 			$time.html("<abbr class='o-timestamp time' data-timestamp='" + id + "' title='" + new Date(id) + "'></abbr>");
 
@@ -431,7 +435,25 @@ profile_notifications.api = function () {
 
 	_createClass(_class, null, [{
 		key: "init",
-		value: function init() {}
+		value: function init() {
+			this.parsers = [];
+		}
+	}, {
+		key: "register_parser",
+		value: function register_parser(func) {
+			if (func) {
+				this.parsers.push(func);
+			}
+		}
+	}, {
+		key: "parse",
+		value: function parse(notification) {
+			for (var i = 0, l = this.parsers.length; i < l; ++i) {
+				notification = this.parsers[i](notification);
+			}
+
+			return notification;
+		}
 	}, {
 		key: "data",
 		value: function data() {

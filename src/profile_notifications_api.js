@@ -1,7 +1,21 @@
 profile_notifications.api = class {
 
 	static init(){
+		this.parsers = [];
+	}
 
+	static register_parser(func){
+		if(func){
+			this.parsers.push(func);
+		}
+	}
+
+	static parse(notification){
+		for(let i = 0, l = this.parsers.length; i < l; ++ i){
+			notification = this.parsers[i](notification);
+		}
+
+		return notification;
 	}
 
 	static data(user_id = 0){

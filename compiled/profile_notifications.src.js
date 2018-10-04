@@ -1,7 +1,7 @@
 class profile_notifications {
 
 	static init(){
-		this.version = "1.0.0";
+		this.version = "1.0.1";
 
 		// Total notifications to show.
 		// Ideally this would become a setting in the
@@ -11,11 +11,12 @@ class profile_notifications {
 
 		this.PLUGIN_KEY = "pd_profile_notifications";
 		this.PLUGIN_ID = "pd_profile_notifications";
-		this.PLUGIN_VERSION = "1.0.0";
+		this.PLUGIN_VERSION = "1.0.1";
 		this.PLUGIN_SETTINGS = null;
 		this.PLUGIN_IMAGES = null;
 		this.PLUGIN = null;
 
+		this.events = Object.create(null);
 
 		this.KEY_DATA = new Map();
 
@@ -174,7 +175,9 @@ class profile_notifications_display {
 
 			$tip_number.html(profile_notifications.number_format(total));
 
-			this.mark_all_viewed();
+			if(profile_notifications.ROUTE.name == "show_user_notifications"){
+				this.mark_all_viewed();
+			}
 		}
 	}
 
@@ -254,7 +257,7 @@ class profile_notifications_display {
 			$main.append($("<span class='new-icon'>new</span>)"));
 		}
 
-		$main.append(document.createTextNode(entry.split("@@")[0]));
+		$main.append(profile_notifications.api.parse(document.createTextNode(entry.split("@@")[0])));
 
 		$time.html("<abbr class='o-timestamp time' data-timestamp='" + id + "' title='" + new Date(id) + "'></abbr>");
 
@@ -356,7 +359,21 @@ class profile_notifications_display {
 profile_notifications.api = class {
 
 	static init(){
+		this.parsers = [];
+	}
 
+	static register_parser(func){
+		if(func){
+			this.parsers.push(func);
+		}
+	}
+
+	static parse(notification){
+		for(let i = 0, l = this.parsers.length; i < l; ++ i){
+			notification = this.parsers[i](notification);
+		}
+
+		return notification;
 	}
 
 	static data(user_id = 0){

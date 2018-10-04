@@ -16,6 +16,7 @@ class profile_notifications {
 		this.PLUGIN_IMAGES = null;
 		this.PLUGIN = null;
 
+		this.events = Object.create(null);
 
 		this.KEY_DATA = new Map();
 

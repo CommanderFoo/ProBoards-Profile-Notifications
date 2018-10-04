@@ -1,4 +1,4 @@
-Profile Notifications API 1.0.0
+Profile Notifications API 1.0.1
 ===============================
 
 A plugin that creates an API which mimics the [ProBoards](https://www.proboards.com/) notifications system.

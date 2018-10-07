@@ -14,7 +14,7 @@ var profile_notifications = function () {
 	_createClass(profile_notifications, null, [{
 		key: "init",
 		value: function init() {
-			this.version = "1.0.1";
+			this.version = "1.0.2";
 
 			// Total notifications to show.
 			// Ideally this would become a setting in the
@@ -24,7 +24,7 @@ var profile_notifications = function () {
 
 			this.PLUGIN_KEY = "pd_profile_notifications";
 			this.PLUGIN_ID = "pd_profile_notifications";
-			this.PLUGIN_VERSION = "1.0.1";
+			this.PLUGIN_VERSION = "1.0.2";
 			this.PLUGIN_SETTINGS = null;
 			this.PLUGIN_IMAGES = null;
 			this.PLUGIN = null;
@@ -1733,7 +1733,7 @@ profile_notifications.api.pruner = function () {
 			var has_pruned = false;
 
 			if (all_data.length > 0) {
-				while (JSON.stringify(all_data).length >= 100) {
+				while (JSON.stringify(all_data).length >= this.key.max_space()) {
 					this._pruned_data.push(key_data.shift());
 					all_data.shift();
 					has_pruned = true;

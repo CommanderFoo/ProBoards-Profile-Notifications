@@ -41,7 +41,7 @@ profile_notifications.api.pruner = class {
 		let has_pruned = false;
 
 		if(all_data.length > 0){
-			while(JSON.stringify(all_data).length >= 100){
+			while(JSON.stringify(all_data).length >= this.key.max_space()){
 				this._pruned_data.push(key_data.shift());
 				all_data.shift();
 				has_pruned = true;
